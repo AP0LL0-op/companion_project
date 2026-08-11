@@ -164,9 +164,17 @@ is a coherent character, not a missing feature. See `origin.example.md` — and 
 that borrowing a real system's backstory makes her assert things that never
 happened to her, which is exactly what the GUARD in `context.py` exists to stop.
 
-A continuously-running daemon version exists and is not published yet. When it
-is, it will be a general companion daemon rather than this — persona as
-something you supply, not something baked in.
+## The daemon is a separate project
+
+A continuously-running daemon is being built as a **separate project**, not a
+future version of this one. It's a general companion daemon — persona as
+something you supply rather than baked in — where this is a session app you
+start and quit. They share ancestry and some modules, but they aren't the same
+thing, and this repository won't become that one.
+
+So: feature requests here are about the session app. If something you want is
+"stay running, think while I'm away, be reachable from anywhere" — that's the
+other project, and it isn't out yet.
 
 ## Load-bearing
 
