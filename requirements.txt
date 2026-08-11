@@ -1,0 +1,37 @@
+# Python dependencies for the local voice companion stack.
+#
+# torch is deliberately NOT pinned here. It must come from a vendor-specific
+# wheel index (ROCm or CUDA), and which one depends on the machine — install.sh
+# detects that and installs torch separately, before this file. Installing
+# torch from PyPI instead will silently give you a CUDA build, which is wrong
+# on AMD and wrong on a CPU-only box.
+#
+#     pip install torch --index-url https://download.pytorch.org/whl/rocm7.0
+#     pip install -r requirements.txt
+
+# Language model client. companion.py streams from an OpenAI-compatible endpoint.
+httpx>=0.27
+
+# CSM: model class, processor, LoRA merge.
+transformers>=4.52
+peft>=0.11
+accelerate>=0.30
+safetensors>=0.4
+
+# Model downloads (gated repos included).
+huggingface_hub>=0.34
+
+# Audio maths: resampling, framing, feature extraction in prosody.py.
+numpy>=1.26
+scipy>=1.11
+
+# Voice activity detection.
+#
+# NOTE: listen.py does NOT import this package. It loads the TorchScript file
+# the package ships (silero_vad/data/silero_vad.jit) directly, on CPU. The
+# dependency is still required — it is how that file gets onto disk.
+#
+# NOTE: do NOT let this pull torchaudio. pip resolves a CUDA build of it, which
+# breaks a ROCm environment on libcudart.so.13. install.sh installs this with
+# --no-deps for that reason and verifies torchaudio is absent afterwards.
+silero-vad>=5.1

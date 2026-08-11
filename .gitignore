@@ -1,0 +1,109 @@
+# Deny-by-default for anything that could be personal.
+#
+# The asymmetry matters: a missed rule publishes someone's private life and
+# their voice; an over-broad rule just means a file doesn't ship.
+#
+# NOTE: gitignore has NO trailing comments. A '#' only starts a comment at the
+# START of a line. `secret.md   # explanation` is a literal pattern containing
+# spaces and a hash, and matches nothing. Every comment here is on its own
+# line for that reason - an earlier version of this file annotated patterns
+# inline and silently protected none of them.
+#
+# Verify, don't assume:
+#     git check-ignore -v core_memory.md
+#     git add -A && git status --short
+
+# ---- personal substrate: NEVER commit ----
+# who the operator is: family, health, work, history
+core_memory.md
+# accrued memory from real conversations
+accrued_memory.md
+# her backstory, if she has one. Held back for two reasons: it is authored
+# character content that belongs to whoever wrote it, and the one on this
+# machine is the Sesame-derived origin, which is not ours to redistribute.
+# origin.example.md ships in its place.
+origin.md
+# policy doc; describes sensitive disclosures by category
+restricted.md
+# imported conversation history
+memory_corpus.jsonl
+# FTS5 index built from it
+memory_archive.db
+
+# ---- biometrics: NEVER commit ----
+# enrolled speaker embeddings
+voiceprints.json
+# recordings of the operator's voice
+enroll_samples/
+enroll_samples*/
+# Speaker recognition belongs to the daemon, not the session app. Both work
+# and are kept locally, but shipping them would put a biometric feature in a
+# release that has no use for it - and would invite people to enroll voices
+# with no gate built around the result yet.
+voiceprint.py
+enroll.py
+
+# ---- per-install config ----
+.env
+
+# ---- daemon tier: held back until it's ready for scrutiny ----
+# The session app (companion.py) does not import any of these - verified by
+# dependency audit, not assumed. It reaches config/context/memory/prosody/
+# session plus the audio stack, and context reaches archive. Nothing else.
+daemon.py
+talk.py
+run.sh
+state.py
+thread.py
+reflect.py
+regulate.py
+body.py
+
+# ---- conversation and runtime state ----
+transcripts/
+session/
+logs/
+thoughts.jsonl
+threads.json
+threads_log.jsonl
+state.json
+regulate_obs.jsonl
+prosody_baseline.json
+body_state.json
+body_events.jsonl
+companion.sock
+.miccheck.json
+*.tmp
+
+# ---- logs ----
+*.log
+
+# ---- installer artifacts ----
+# install.sh writes these; all are per-machine.
+# The generated llama-server launcher lives under --prefix (default
+# <prefix>/start-llama.sh), outside the repo, so it needs no rule here.
+.install-state
+.install-hf.py
+.venv/
+
+# ---- audio: test output and anything captured ----
+*.wav
+*.raw
+
+# ---- python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# ---- models and caches: never commit weights ----
+*.gguf
+*.onnx
+*.pt
+*.bin
+models/
+.cache/
+
+# ---- explicitly DO ship ----
+!core_memory.example.md
+!origin.example.md
